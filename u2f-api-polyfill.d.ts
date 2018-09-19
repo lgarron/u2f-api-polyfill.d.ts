@@ -2,20 +2,52 @@
 // See:
 // - https://fidoalliance.org/specs/fido-u2f-v1.2-ps-20170411/fido-u2f-javascript-api-v1.2-ps-20170411.html#key-words
 // - https://tools.ietf.org/html/rfc4648#section-5
-type WebSafeBase64 = string;
+type WebSafeBase64<T> = string;
+
+// Blob with fields
+type BinaryEncoded<T> = string;
+
+type URL = String;
+type WebOrigin = URL;
+type TrustedFacetsURL = URL;
+
+// U2F Types
+
+type Challenge = WebSafeBase64<string>;
+type Typ = "navigator.id.getAssertion" | "navigator.id.finishEnrollment"
+
+// TODO: Which fields are optional?
+type ClientData = {
+  typ: Typ,
+  challenge: Challenge,
+  origin: WebOrigin
+  cid_pubkey: "unused"
+}
+
+type RegistrationData = {
+  // TODO
+}
+
+type SignatureData = {
+  // TODO
+}
+
+// TODO
+type KeyHandle = string;
+
 
 // Polyfill-specific types for `u2f-api-polyfill.d.ts` that are not defined in
 // `u2f-api-polyfill` itself.
 
-type PolyfillVersion = "U2F_V2"; // TODO: are other values supported?
-type AppID = string; // A URL
-type Challenge = WebSafeBase64;
-type ClientData = string; // TODO
+type AppID = TrustedFacetsURL; // A URL
+type EncodedClientData = WebSafeBase64<ClientData>; // TODO
+type EncodedRegistrationData = BinaryEncoded<RegistrationData>;
+type EncodedSignatureData = BinaryEncoded<SignatureData>; // TODO
 type ErrorMessage = string;
-type KeyHandle = WebSafeBase64;
+type EncodedKeyHandle = WebSafeBase64<KeyHandle>;
+type PolyfillVersion = "U2F_V2"; // TODO: are other values supported?
 type RequestID = number;
 type Seconds = number;
-type SignatureData = string; // TODO
 
 // Types from `u2f-api-polyfill`.
 
@@ -39,18 +71,18 @@ export enum ErrorCode {
   TIMEOUT = 5
 }
 
-type Request = {
-  type: MessageType,
-  appId?: AppID,
-  timeoutSeconds?: Seconds,
-  requestId?: RequestID
-}
+// type Request = {
+//   type: MessageType,
+//   appId?: AppID,
+//   timeoutSeconds?: Seconds,
+//   requestId?: RequestID
+// }
 
-type Response = {
-  type: MessageType,
-  responseData: (U2FError | RegisterResponse | SignResponse),
-  requestId?: RequestID
-}
+// type Response = {
+//   type: MessageType,
+//   responseData: (U2FError | RegisterResponse | SignResponse),
+//   requestId?: RequestID
+// }
 
 type U2FError = {
   errorCode: ErrorCode,
@@ -65,17 +97,19 @@ export enum Transport {
   NFC
 }
 
-type SignRequest = {
-  version: PolyfillVersion,
-  challenge: Challenge,
-  keyHandle: KeyHandle,
-  appId: AppID
-}
+// From v1:
+// https://fidoalliance.org/specs/fido-u2f-v1.0-nfc-bt-amendment-20150514/fido-u2f-javascript-api.html#backward-compatibility-with-u2f-1.0-api
+// type SignRequest = {
+//   version: PolyfillVersion,
+//   challenge: Challenge,
+//   keyHandle: EncodedKeyHandle,
+//   appId: AppID
+// }
 
 type SignResponse = {
-  keyHandle: KeyHandle,
-  signatureData: SignatureData,
-  clientData: ClientData
+  keyHandle: EncodedKeyHandle,
+  EncodedsignatureData: EncodedSignatureData,
+  clientData: EncodedClientData
 }
 
 type RegisterRequest = {
@@ -83,17 +117,16 @@ type RegisterRequest = {
   challenge: Challenge
 }
 
-
 type RegisterResponse = {
   version: PolyfillVersion,
-  keyHandle: KeyHandle,
-  transports: Transport[],
-  appId: AppID
+  challenge: Challenge,
+  EncodedregistrationData: EncodedRegistrationData,
+  clientData: EncodedClientData
 }
 
 type RegisteredKey = {
   version: PolyfillVersion,
-  keyHandle: KeyHandle,
+  keyHandle: EncodedKeyHandle,
   transports: Transport[],
   appId?: AppID
 }
