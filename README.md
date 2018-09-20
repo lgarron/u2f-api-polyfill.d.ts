@@ -6,7 +6,7 @@ TypeScript definitions for the [`u2f-api-polyfill`](https://www.npmjs.com/packag
 
 Add to `./node_modules/@types/u2f-api-polyfill` and add/import `u2f-api-polyfill` as normal.
 
-  import "u2f-api-polyfill"
+    import "u2f-api-polyfill"
 
-  // TypeScript should know the type for this.
-  window.u2f.sign(...)
+    // TypeScript should know the type for this.
+    window.u2f.sign(...)
