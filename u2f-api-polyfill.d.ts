@@ -71,19 +71,6 @@ export enum ErrorCode {
   TIMEOUT = 5
 }
 
-// type Request = {
-//   type: MessageType,
-//   appId?: AppID,
-//   timeoutSeconds?: Seconds,
-//   requestId?: RequestID
-// }
-
-// type Response = {
-//   type: MessageType,
-//   responseData: (U2FError | RegisterResponse | SignResponse),
-//   requestId?: RequestID
-// }
-
 type U2FError = {
   errorCode: ErrorCode,
   errorMessage?: ErrorMessage
@@ -96,15 +83,6 @@ export enum Transport {
   USB,
   NFC
 }
-
-// From v1:
-// https://fidoalliance.org/specs/fido-u2f-v1.0-nfc-bt-amendment-20150514/fido-u2f-javascript-api.html#backward-compatibility-with-u2f-1.0-api
-// type SignRequest = {
-//   version: PolyfillVersion,
-//   challenge: Challenge,
-//   keyHandle: EncodedKeyHandle,
-//   appId: AppID
-// }
 
 type SignResponse = {
   keyHandle: EncodedKeyHandle,
