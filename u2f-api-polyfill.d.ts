@@ -86,7 +86,7 @@ export enum Transport {
 
 type SignResponse = {
   keyHandle: EncodedKeyHandle,
-  EncodedsignatureData: EncodedSignatureData,
+  signatureData: EncodedSignatureData,
   clientData: EncodedClientData
 }
 
