@@ -98,7 +98,7 @@ type RegisterRequest = {
 type RegisterResponse = {
   version: PolyfillVersion,
   challenge: Challenge,
-  EncodedregistrationData: EncodedRegistrationData,
+  registrationData: EncodedRegistrationData,
   clientData: EncodedClientData
 }
 
